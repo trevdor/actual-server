@@ -7,6 +7,7 @@ on:
       - master
     tags:
       - 'v*.*.*'
+      - 'responsive'
     paths-ignore:
       - README.md
       - LICENSE.txt
