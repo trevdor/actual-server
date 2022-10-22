@@ -1,0 +1,51 @@
+name: Trigger rebuild from external branch
+on:
+  schedule:
+    # At every 36th minute.
+    - cron: '*/36 * * * *'
+  # allow manual trigger
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+env:
+  BRANCH: responsive
+  OWNER: trevdor
+  REPO: actual
+jobs:
+  check:
+    name: Check external branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check remote
+        uses: octokit/request-action@v2.x
+        id: get_commit
+        with:
+          # https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH
+          route: GET /repos/:owner/:repo/git/refs/heads/:branch
+          owner: ${{ env.OWNER }}
+          repo: ${{ env.REPO }}
+          branch: ${{ env.BRANCH }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Save commit sha
+        run: echo "${{ fromJson(steps.get_commit.outputs.data).object.sha }}" | tee commit.txt
+      - name: Cache commit
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: commit.txt
+          key: commit-cache-${{ fromJson(steps.get_commit.outputs.data).object.sha }}
+      - name: Debug cache
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: echo "New commit! ${{ fromJson(steps.get_commit.outputs.data).object.sha }}"
+    outputs:
+      cache-hit: ${{ steps.cache.outputs.cache-hit }}
+  build:
+    name: Build preview image
+    needs: check
+    if: needs.check.outputs.cache-hit != 'true'
+    permissions:
+      packages: write
+      contents: read
+    uses: ./.github/workflows/build-preview.yml

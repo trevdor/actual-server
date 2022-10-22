@@ -13,8 +13,8 @@ on:
 
 env:
   IMAGES: |
-    jlongster/actual-server
-    ghcr.io/actualbudget/actual-server
+    trevdor/actual-server
+    ghcr.io/trevdor/actual-server
 
   # Creates the following tags:
   # - actual-server:latest (see docker/metadata-action flavor inputs, below)
