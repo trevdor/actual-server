@@ -3,30 +3,19 @@ name: Build Docker Image
 # Docker Images are built for every push to master or when a new tag is created
 on:
   push:
-    branches:
-      - master
     tags:
-      - 'v*.*.*'
+      - '*-responsive'
     paths-ignore:
       - README.md
       - LICENSE.txt
 
 env:
   IMAGES: |
-    jlongster/actual-server
-    ghcr.io/actualbudget/actual-server
+    trevdor/actual-server
+    ghcr.io/trevdor/actual-server
 
-  # Creates the following tags:
-  # - actual-server:latest (see docker/metadata-action flavor inputs, below)
-  # - actual-server:edge (for master)
-  # - actual-server:1.3
-  # - actual-server:1.3.7
-  # - actual-server:sha-90dd603
   TAGS: |
-    type=edge,value=edge
-    type=semver,pattern={{version}}
-    type=semver,pattern={{major}}.{{minor}}
-    type=sha
+    type=match,pattern=v(.*-responsive),group=1
 
 jobs:
   build:
