@@ -14,7 +14,7 @@ RUN rm cache_version && \
     yarn
 # CI true skips an unnecessary lint step
 ENV CI=true
-RUN bash ./bin/package-browser
+RUN bash ./bin/package-browser RELEASE=responsive-preview
 
 # build the server with the FE from the previous step
 FROM alpine:3 as base
@@ -23,7 +23,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=client /actual/packages/desktop-client/build/ /actual
 COPY yarn.lock package.json ./
-RUN npm rebuild bcrypt --build-from-source
+#RUN npm rebuild bcrypt --build-from-source
 RUN yarn install --production
 
 # final server build without any extras
