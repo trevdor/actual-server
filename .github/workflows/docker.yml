@@ -58,13 +58,13 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push standard image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
+      # - name: Build and push standard image
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     push: true
+      #     platforms: linux/amd64,linux/arm64
+      #     tags: ${{ steps.meta.outputs.tags }}
 
       - name: Build and push Alpine image
         uses: docker/build-push-action@v3

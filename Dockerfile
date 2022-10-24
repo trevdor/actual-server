@@ -8,9 +8,9 @@ ENV REPO=actual
 ENV BRANCH=responsive
 # cache invalidation. This should return a new value if the commit changes,
 # forcing a rebuild from this step.
-ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH cache_version
-RUN rm cache_version && \
-    git clone -b $BRANCH https://github.com/$USER/$REPO.git . && \
+# ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH cache_version
+# RUN rm cache_version && \
+RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git . && \
     yarn
 # CI true skips an unnecessary lint step
 ENV CI=true
@@ -23,7 +23,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=client /actual/packages/desktop-client/build/ /actual
 COPY yarn.lock package.json ./
-RUN npm rebuild bcrypt --build-from-source
+#RUN npm rebuild bcrypt --build-from-source
 RUN yarn install --production
 
 # final server build without any extras
