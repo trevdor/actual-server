@@ -8,12 +8,12 @@ ENV REPO=actual
 ENV BRANCH=responsive
 # cache invalidation. This should return a new value if the commit changes,
 # forcing a rebuild from this step.
-ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH cache_version
-RUN rm cache_version && \
-    git clone -b $BRANCH https://github.com/$USER/$REPO.git . && \
-    yarn
+# ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH cache_version
+# RUN rm cache_version && \
+RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git .
 # CI true skips an unnecessary lint step
 ENV CI=true
+RUN yarn install
 RUN bash ./bin/package-browser
 
 # build the server with the FE from the previous step
