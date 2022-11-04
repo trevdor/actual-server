@@ -22,9 +22,9 @@ RUN apt-get update && apt-get install -y openssl git rsync
 WORKDIR /app
 ENV NODE_ENV=production
 RUN npm rebuild bcrypt --build-from-source
+COPY yarn.lock package.json ./
 RUN yarn install --production
 COPY --from=client /actual/packages/desktop-client/build/ /actual
-COPY yarn.lock package.json ./
 
 # final server build without any extras
 FROM node:16-bullseye-slim as prod

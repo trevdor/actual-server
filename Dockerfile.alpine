@@ -21,10 +21,10 @@ FROM alpine:3 as base
 RUN apk add --no-cache nodejs yarn npm python3 openssl build-base
 WORKDIR /app
 ENV NODE_ENV=production
-COPY --from=client /actual/packages/desktop-client/build/ /actual
-COPY yarn.lock package.json ./
 RUN npm rebuild bcrypt --build-from-source
+COPY yarn.lock package.json ./
 RUN yarn install --production
+COPY --from=client /actual/packages/desktop-client/build/ /actual
 
 # final server build without any extras
 FROM alpine:3 as prod
