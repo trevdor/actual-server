@@ -21,10 +21,10 @@ FROM node:16-bullseye as base
 RUN apt-get update && apt-get install -y openssl git rsync
 WORKDIR /app
 ENV NODE_ENV=production
-COPY --from=client /actual/packages/desktop-client/build/ /actual
-COPY yarn.lock package.json ./
 RUN npm rebuild bcrypt --build-from-source
 RUN yarn install --production
+COPY --from=client /actual/packages/desktop-client/build/ /actual
+COPY yarn.lock package.json ./
 
 # final server build without any extras
 FROM node:16-bullseye-slim as prod
