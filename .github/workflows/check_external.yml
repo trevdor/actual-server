@@ -2,7 +2,7 @@ name: Trigger rebuild from external branch
 on:
   schedule:
     # At every 36th minute.
-    - cron: "*/36 * * * *"
+    - cron: '*/36 * * * *'
   # allow manual trigger
   workflow_dispatch:
 defaults:
@@ -31,7 +31,7 @@ jobs:
       - name: Save commit sha
         run: echo "${{ fromJson(steps.get_commit.outputs.data).object.sha }}" | tee commit.txt
       - name: Cache commit
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache
         with:
           path: commit.txt
