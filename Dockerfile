@@ -14,7 +14,7 @@ WORKDIR /actual
 # RUN rm cache_version && \
 RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git .
 # CI true skips an unnecessary lint step
-#ENV CI=true
+ENV CI=true
 RUN yarn install
 RUN ./bin/package-browser
 
@@ -23,10 +23,10 @@ FROM node:16-bullseye as base
 RUN apt-get update && apt-get install -y openssl git rsync
 WORKDIR /app
 ENV NODE_ENV=production
-COPY yarn.lock package.json ./
 RUN npm rebuild bcrypt --build-from-source
+COPY yarn.lock package.json ./
 RUN yarn install --production
-# COPY --from=client /actual/packages/desktop-client/build node_modules/@actual-app/web/build
+COPY --from=client /actual/packages/desktop-client/build /app/node_modules/@actual-app/web/build
 
 # final server build without any extras
 FROM node:16-bullseye-slim as prod

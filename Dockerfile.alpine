@@ -14,7 +14,7 @@ WORKDIR /actual
 # RUN rm cache_version && \
 RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git .
 # CI true skips an unnecessary lint step
-#ENV CI=true
+ENV CI=true
 RUN yarn install
 RUN bash ./bin/package-browser
 
@@ -26,7 +26,7 @@ ENV NODE_ENV=production
 COPY yarn.lock package.json ./
 RUN npm rebuild bcrypt --build-from-source
 RUN yarn install --production
-# COPY --from=client /actual/packages/desktop-client/build node_modules/@actual-app/web/build
+COPY --from=client /actual/packages/desktop-client/build /app/node_modules/@actual-app/web/build
 
 FROM alpine as prod
 RUN apk add --no-cache nodejs yarn openssl tini
