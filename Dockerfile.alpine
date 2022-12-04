@@ -7,7 +7,7 @@ ENV USER=trevdor
 ENV REPO=actual
 ENV BRANCH=responsive
 
-WORKDIR /responsive-actual
+WORKDIR /actual
 # cache invalidation. This should return a new value if the commit changes,
 # forcing a rebuild from this step.
 # ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH cache_version
@@ -23,8 +23,10 @@ FROM alpine:3 as base
 RUN apk add --no-cache nodejs yarn npm python3 openssl build-base
 WORKDIR /app
 ENV NODE_ENV=production
+COPY yarn.lock package.json ./
 RUN npm rebuild bcrypt --build-from-source
 RUN yarn install --production
+# COPY --from=client /actual/packages/desktop-client/build node_modules/@actual-app/web/build
 
 FROM alpine as prod
 RUN apk add --no-cache nodejs yarn openssl tini

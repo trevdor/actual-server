@@ -35,6 +35,6 @@
     "typescript": "^4.6.4"
   },
   "resolutions": {
-    "@actual-app/web": "portal:/responsive-actual"
+    "@actual-app/web": "portal:/actual"
   }
 }

@@ -7,7 +7,7 @@ ENV USER=trevdor
 ENV REPO=actual
 ENV BRANCH=responsive
 
-WORKDIR /responsive-actual
+WORKDIR /actual
 # cache invalidation. This should return a new value if the commit changes,
 # forcing a rebuild from this step.
 # ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH cache_version
@@ -23,8 +23,10 @@ FROM node:16-bullseye as base
 RUN apt-get update && apt-get install -y openssl git rsync
 WORKDIR /app
 ENV NODE_ENV=production
+COPY yarn.lock package.json ./
 RUN npm rebuild bcrypt --build-from-source
 RUN yarn install --production
+# COPY --from=client /actual/packages/desktop-client/build node_modules/@actual-app/web/build
 
 # final server build without any extras
 FROM node:16-bullseye-slim as prod
