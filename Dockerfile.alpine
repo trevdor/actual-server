@@ -3,9 +3,9 @@ FROM alpine:3 as client
 RUN apk add --no-cache nodejs yarn npm python3 openssl build-base git bash rsync
 
 # Branch info to use for the @actual-app/web build
-ENV USER=trevdor
+ENV USER=actualbudget
 ENV REPO=actual
-ENV BRANCH=responsive
+ENV BRANCH=trevdor-responsive
 
 WORKDIR /actual
 # cache invalidation. This should return a new value if the commit changes,

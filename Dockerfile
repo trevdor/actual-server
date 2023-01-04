@@ -3,9 +3,9 @@ FROM node:16-bullseye as client
 RUN apt-get update && apt-get install -y openssl git rsync
 
 # Branch info to use for the @actual-app/web build
-ENV USER=trevdor
+ENV USER=actualbudget
 ENV REPO=actual
-ENV BRANCH=responsive
+ENV BRANCH=trevdor-responsive
 
 WORKDIR /actual
 # cache invalidation. This should return a new value if the commit changes,

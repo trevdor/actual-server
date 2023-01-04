@@ -9,8 +9,8 @@ defaults:
   run:
     shell: bash
 env:
-  BRANCH: responsive
-  OWNER: trevdor
+  BRANCH: trevdor-responsive
+  OWNER: actualbudget
   REPO: actual
 jobs:
   check:
